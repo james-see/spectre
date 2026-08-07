@@ -60,3 +60,17 @@ Spread diagonally across the room; avoid a single line.
 ## Credentials
 
 Never commit `.env`. Provisioning writes SSID/password into device NVS only.
+
+## Aggregator on OrbStack
+
+```bash
+# ensure OrbStack is running (docker context: orbstack)
+docker compose -f ~/p/spectre/docker-compose.yml up -d
+open http://127.0.0.1:3000/ui/index.html
+```
+
+- HTTP/WS: `127.0.0.1:3000` / `:3001`
+- CSI UDP: host `:5005` (must match `TARGET_IP` / `TARGET_PORT` in `.env`)
+- `CSI_SOURCE=esp32`, unauthenticated bind allowed for local lab use
+
+Stop: `docker compose -f ~/p/spectre/docker-compose.yml down`

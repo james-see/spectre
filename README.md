@@ -52,17 +52,18 @@ chmod +x scripts/*.sh
 
 Place nodes ~2–3 m apart, ~1 m off the floor, not in a straight line.
 
-### Aggregator
+### Aggregator (OrbStack / Docker)
 
-Nodes UDP‑stream CSI to `TARGET_IP:5005`. Run [RuView](https://github.com/ruvnet/RuView)’s sensing server on that host:
+Nodes UDP‑stream CSI to `TARGET_IP:5005`. On the Mac (same LAN IP as `.env`):
 
 ```bash
-# after installing Rust + cloning RuView
-cd /path/to/RuView/v2
-cargo run -p wifi-densepose-sensing-server -- --http-port 3000 --source auto
+cd ~/p/spectre
+docker compose up -d          # uses OrbStack context
+open http://127.0.0.1:3000/ui/index.html
+docker compose logs -f        # optional
 ```
 
-Open the dashboard URL the server prints (typically `http://127.0.0.1:3000`).
+Requires [OrbStack](https://orbstack.dev) (or Docker) with context `orbstack`. Image: `ruvnet/wifi-densepose:latest`.
 
 ## What’s in this repo
 

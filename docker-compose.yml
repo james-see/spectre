@@ -1,0 +1,28 @@
+# Spectre aggregator — RuView sensing server on OrbStack/Docker
+#
+#   docker compose up -d
+#   open http://127.0.0.1:3000
+#
+# Nodes stream CSI UDP → host:5005 (already provisioned to TARGET_IP).
+
+services:
+  sensing-server:
+    image: ruvnet/wifi-densepose:latest
+    container_name: spectre-sensing
+    ports:
+      - "127.0.0.1:3000:3000"   # UI + REST
+      - "127.0.0.1:3001:3001"   # WebSocket
+      - "5005:5005/udp"        # ESP32 CSI (LAN)
+    environment:
+      RUST_LOG: info
+      CSI_SOURCE: esp32
+      # Bind all interfaces inside the container so Docker port publish works.
+      # Host mapping keeps HTTP/WS on 127.0.0.1 only; UDP 5005 is LAN-facing on purpose.
+      RUVIEW_BIND_ADDR: "0.0.0.0"
+      RUVIEW_ALLOW_UNAUTHENTICATED: "1"
+      MODELS_DIR: /app/models
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
