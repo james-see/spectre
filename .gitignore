@@ -1,11 +1,18 @@
-.env
-.DS_Store
-*.pyc
+
 __pycache__/
-.venv/
-provision-state/
+.DS_Store
+.env
 .espressif/
-build/
-*.log
 .idea/
+.venv/
 .vscode/
+*.log
+*.pyc
+# Downloaded HF / converted RVF weights
+build/
+data/
+models/
+provision-state/
+web/node_modules/
+web/dist/
+web/.astro/

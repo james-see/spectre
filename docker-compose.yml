@@ -21,6 +21,24 @@ services:
       RUVIEW_BIND_ADDR: "0.0.0.0"
       RUVIEW_ALLOW_UNAUTHENTICATED: "1"
       MODELS_DIR: /app/models
+    # Prepend sensing-server flags (entrypoint adds --source etc.)
+    command:
+      - --model
+      - /app/models/wifi-densepose-pretrained.rvf
+    volumes:
+      # Live-by-default Observatory UI (overrides image demo defaults)
+      - ./ui/observatory.html:/app/ui/observatory.html:ro
+      - ./ui/observatory/js/main.js:/app/ui/observatory/js/main.js:ro
+      - ./ui/observatory/js/hud-controller.js:/app/ui/observatory/js/hud-controller.js:ro
+      # Training panel: activity label + session name before Record
+      - ./ui/components/TrainingPanel.js:/app/ui/components/TrainingPanel.js:ro
+      # Model UI: tolerate images missing GET /api/v1/models/:id
+      - ./ui/services/model.service.js:/app/ui/services/model.service.js:ro
+      - ./ui/components/LiveDemoTab.js:/app/ui/components/LiveDemoTab.js:ro
+      # Persist recordings/models across container recreate
+      - ./data:/app/data
+      # HF → .rvf pretrained (./scripts/fetch_models.sh)
+      - ./models:/app/models:ro
     security_opt:
       - no-new-privileges:true
     cap_drop:

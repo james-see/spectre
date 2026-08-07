@@ -1,0 +1,13 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import RecordPanel from '../components/RecordPanel.svelte';
+---
+
+<AppLayout title="Record" path="/record">
+  <h1 class="page-title">Record</h1>
+  <p class="page-sub">
+    Labeled CSI sessions for adaptive presence/motion and DensePose fine-tune. Use empty / stand / walk
+    for presence training.
+  </p>
+  <RecordPanel client:load />
+</AppLayout>

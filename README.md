@@ -52,26 +52,36 @@ chmod +x scripts/*.sh
 
 Place nodes ~2–3 m apart, ~1 m off the floor, not in a straight line.
 
-### Aggregator (OrbStack / Docker)
+### Aggregator (local sensing-server + Spectre UI)
 
-Nodes UDP‑stream CSI to `TARGET_IP:5005`. On the Mac (same LAN IP as `.env`):
+Nodes UDP‑stream CSI to `TARGET_IP:5005`. On the Mac:
 
 ```bash
-cd ~/p/spectre
-docker compose up -d          # uses OrbStack context
-open http://127.0.0.1:3000/ui/index.html
-docker compose logs -f        # optional
+# engine
+cd ~/p/spectre && ./scripts/run_local.sh
+
+# optional: Deco mesh LAN hotspots for Observatory
+# set DECO_HOST / DECO_USER / DECO_PASS in .env first
+cd ~/p/spectre && ./scripts/run_deco.sh
+
+# UI (Astro + Svelte) — separate terminal
+cd ~/p/spectre/web && npm install && npm run dev
+open http://127.0.0.1:4321/
 ```
 
-Requires [OrbStack](https://orbstack.dev) (or Docker) with context `orbstack`. Image: `ruvnet/wifi-densepose:latest`.
+Docker/OrbStack remains optional for the engine only; the product UI is `web/`, not RuView’s demoware tabs.
 
 ## What’s in this repo
 
 | Path | Purpose |
 |------|---------|
+| `web/` | Spectre operator UI (Astro + Svelte) |
 | `firmware/` | Prebuilt ESP32‑S3 CSI node images (from RuView) |
 | `scripts/fetch_firmware.sh` | Download latest (or pinned) RuView ESP32 release bins |
 | `scripts/flash_node.sh` | One‑command flash + NVS provision |
+| `scripts/run_local.sh` | Local sensing-server launcher |
+| `scripts/run_deco.sh` | TP-Link Deco LAN poller (`:3002`) |
+| `services/deco/` | Go/Gin Deco mesh + client API |
 | `scripts/provision.py` | Wi‑Fi / node‑id / TDM NVS writer |
 | `.env.example` | Credentials template (never commit `.env`) |
 | `docs/setup.md` | Cables, ports, triad layout |

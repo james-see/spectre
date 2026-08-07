@@ -1,0 +1,10 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import PoseView from '../components/PoseView.svelte';
+---
+
+<AppLayout title="Pose" path="/pose">
+  <h1 class="page-title">DensePose</h1>
+  <p class="page-sub">Limbs render only when keypoint confidence clears the trust gate.</p>
+  <PoseView client:load />
+</AppLayout>

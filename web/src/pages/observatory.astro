@@ -1,0 +1,10 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import ObservatoryScene from '../components/ObservatoryScene.svelte';
+---
+
+<AppLayout title="Observatory" path="/observatory" wide>
+  <h1 class="page-title">Observatory</h1>
+  <p class="page-sub">Room-scale mesh view — AP, Wi‑Fi field, and live ESP32 nodes.</p>
+  <ObservatoryScene client:load />
+</AppLayout>

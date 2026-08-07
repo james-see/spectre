@@ -1,0 +1,12 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import SetupWizard from '../components/SetupWizard.svelte';
+---
+
+<AppLayout title="Wizard" path="/wizard" wide>
+  <h1 class="page-title">Setup wizard</h1>
+  <p class="page-sub">
+    Guided path: ESP32 room → MM-Fi / pretrained base → camera-labeled CSI → fine-tune → validate.
+  </p>
+  <SetupWizard client:load />
+</AppLayout>

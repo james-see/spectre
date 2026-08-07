@@ -1,0 +1,10 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import MeshStatus from '../components/MeshStatus.svelte';
+---
+
+<AppLayout title="Status" path="/">
+  <h1 class="page-title">Mesh status</h1>
+  <p class="page-sub">Live ESP32 nodes only — no simulated fallback.</p>
+  <MeshStatus client:load />
+</AppLayout>

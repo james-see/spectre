@@ -1,0 +1,10 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import SensingCharts from '../components/SensingCharts.svelte';
+---
+
+<AppLayout title="Sensing" path="/sensing">
+  <h1 class="page-title">Sensing</h1>
+  <p class="page-sub">CSI features from the live WebSocket, auto-scaled charts.</p>
+  <SensingCharts client:load />
+</AppLayout>

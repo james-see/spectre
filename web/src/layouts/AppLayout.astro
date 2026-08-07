@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import ModelMenu from '../components/ModelMenu.svelte';
+
+interface Props {
+  title: string;
+  path: string;
+  wide?: boolean;
+}
+
+const { title, path, wide = false } = Astro.props;
+const links = [
+  { href: '/', label: 'Status' },
+  { href: '/wizard', label: 'Wizard' },
+  { href: '/observatory', label: 'Observatory' },
+  { href: '/field', label: 'Field' },
+  { href: '/sensing', label: 'Sensing' },
+  { href: '/pose', label: 'Pose' },
+  { href: '/camera', label: 'Camera' },
+  { href: '/record', label: 'Record' },
+  { href: '/train', label: 'Train' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Spectre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">SPECTRE</div>
+        <nav class="nav" aria-label="Primary">
+          {
+            links.map((l) => (
+              <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>
+                {l.label}
+              </a>
+            ))
+          }
+        </nav>
+        <ModelMenu client:load />
+      </header>
+      <main class:list={['main', wide && 'main-wide']}>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

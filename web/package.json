@@ -1,0 +1,23 @@
+{
+  "name": "spectre-web",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^9.0.1",
+    "@mediapipe/tasks-vision": "^0.10.18",
+    "astro": "^7.2.0",
+    "chart.js": "^4.5.1",
+    "svelte": "^5.56.8",
+    "three": "^0.185.1",
+    "typescript": "^6.0.3"
+  }
+}

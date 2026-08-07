@@ -1,0 +1,12 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import CameraTrack from '../components/CameraTrack.svelte';
+---
+
+<AppLayout title="Camera" path="/camera" wide>
+  <h1 class="page-title">Camera</h1>
+  <p class="page-sub">
+    Local webcam underlay with DensePose limbs from the sensing-server — only when confidence is real.
+  </p>
+  <CameraTrack client:load />
+</AppLayout>

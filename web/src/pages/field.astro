@@ -1,0 +1,12 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import FieldScene from '../components/FieldScene.svelte';
+---
+
+<AppLayout title="Field" path="/field" wide>
+  <h1 class="page-title">Field</h1>
+  <p class="page-sub">
+    CSI RF activity map — fused heat plus per-node POV and subcarrier signature (not spatial vision).
+  </p>
+  <FieldScene client:load />
+</AppLayout>

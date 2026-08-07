@@ -1,0 +1,14 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import TrainPanel from '../components/TrainPanel.svelte';
+import AdaptivePresencePanel from '../components/AdaptivePresencePanel.svelte';
+---
+
+<AppLayout title="Train" path="/train">
+  <h1 class="page-title">Train</h1>
+  <p class="page-sub">
+    DensePose limbs (RVF) and room-adaptive presence/motion — separate paths from the same Recordings.
+  </p>
+  <TrainPanel client:load />
+  <AdaptivePresencePanel client:load />
+</AppLayout>
