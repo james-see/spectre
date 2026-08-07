@@ -3,6 +3,9 @@
 # Usage:
 #   ./scripts/flash_node.sh <PORT> <NODE_ID>
 # NODE_ID: 1..TDM_TOTAL  (tdm-slot = NODE_ID-1)
+#
+# Firmware bins live in firmware/ — refresh with:
+#   ./scripts/fetch_firmware.sh
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -26,6 +29,17 @@ TARGET_PORT="${TARGET_PORT:-5005}"
 ZONE="${ZONE:-room}"
 EDGE_TIER="${EDGE_TIER:-2}"
 BINS="$ROOT/firmware"
+
+for f in bootloader.bin partition-table.bin ota_data_initial.bin esp32-csi-node.bin; do
+  if [[ ! -f "$BINS/$f" ]]; then
+    echo "Missing $BINS/$f — run: ./scripts/fetch_firmware.sh" >&2
+    exit 1
+  fi
+done
+if [[ -f "$BINS/SOURCE.txt" ]]; then
+  echo "Firmware source:"
+  sed 's/^/  /' "$BINS/SOURCE.txt"
+fi
 
 export PYENV_VERSION="${PYENV_VERSION:-system}"
 # Prefer ESP-IDF venv esptool when present

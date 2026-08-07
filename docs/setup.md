@@ -1,5 +1,32 @@
 # Spectre setup notes
 
+## Fetch firmware
+
+Flash images are **not** baked into the flash script. Download them from
+upstream RuView ESP32 releases:
+
+```bash
+./scripts/fetch_firmware.sh              # latest *-esp32 GitHub release
+./scripts/fetch_firmware.sh --list       # show tags
+./scripts/fetch_firmware.sh v0.8.4-esp32 # pin a tag
+```
+
+What it does:
+
+1. Resolves the newest non-draft `*esp32*` release on `ruvnet/RuView` (or uses your tag).
+2. Downloads the **8MB flash bundle** zip when available (`bootloader`, `partition-table`, `ota_data_initial`, app).
+3. Normalizes the app binary to `firmware/esp32-csi-node.bin` (what `flash_node.sh` expects).
+4. Optionally pulls a 4MB app binary when the release includes one.
+5. Writes `firmware/SOURCE.txt` with repo, tag, and timestamp.
+
+Requires: `curl`, `unzip`, `python3`. Override repo with `RUVIEW_REPO=owner/name` if needed.
+
+After fetching, flash as usual:
+
+```bash
+./scripts/flash_node.sh /dev/cu.wchusbserialXXXX 1
+```
+
 ## Ports on Mac
 
 | Device | Typical path | Use |

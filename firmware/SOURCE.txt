@@ -1,0 +1,10 @@
+source_repo=ruvnet/RuView
+release_tag=v0.8.4-esp32
+fetched_at=2026-08-07T00:03:45Z
+app=esp32-csi-node.bin
+file=/Users/jc/p/spectre/firmware/bootloader.bin bytes=18880
+file=/Users/jc/p/spectre/firmware/esp32-csi-node-4mb.bin bytes=904448
+file=/Users/jc/p/spectre/firmware/esp32-csi-node.bin bytes=1126624
+file=/Users/jc/p/spectre/firmware/ota_data_initial.bin bytes=8192
+file=/Users/jc/p/spectre/firmware/partition-table-4mb.bin bytes=3072
+file=/Users/jc/p/spectre/firmware/partition-table.bin bytes=3072

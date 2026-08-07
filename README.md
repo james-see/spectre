@@ -33,13 +33,22 @@ cd ~/p/spectre
 cp .env.example .env
 # edit WIFI_SSID / WIFI_PASS / TARGET_IP (your Mac LAN IP)
 
-chmod +x scripts/flash_node.sh
+chmod +x scripts/*.sh
+
+# Pull latest ESP32-S3 flash images from RuView (or a specific tag)
+./scripts/fetch_firmware.sh
+# ./scripts/fetch_firmware.sh v0.8.4-esp32
+# ./scripts/fetch_firmware.sh --list
 
 # Flash boards one at a time on the UART/serial port
 ./scripts/flash_node.sh /dev/cu.wchusbserialXXXX 1
 ./scripts/flash_node.sh /dev/cu.wchusbserialXXXX 2
 ./scripts/flash_node.sh /dev/cu.wchusbserialXXXX 3
 ```
+
+`firmware/` may already contain bins from the last fetch/commit. Re-run
+`fetch_firmware.sh` whenever you want upstream updates — it overwrites
+`firmware/*.bin` and writes `firmware/SOURCE.txt` with the release tag.
 
 Place nodes ~2–3 m apart, ~1 m off the floor, not in a straight line.
 
@@ -60,9 +69,11 @@ Open the dashboard URL the server prints (typically `http://127.0.0.1:3000`).
 | Path | Purpose |
 |------|---------|
 | `firmware/` | Prebuilt ESP32‑S3 CSI node images (from RuView) |
+| `scripts/fetch_firmware.sh` | Download latest (or pinned) RuView ESP32 release bins |
 | `scripts/flash_node.sh` | One‑command flash + NVS provision |
 | `scripts/provision.py` | Wi‑Fi / node‑id / TDM NVS writer |
 | `.env.example` | Credentials template (never commit `.env`) |
+| `docs/setup.md` | Cables, ports, triad layout |
 
 ## Status
 
