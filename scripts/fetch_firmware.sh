@@ -36,18 +36,20 @@ fetch_release_index() {
   local page=1
   while [[ "$page" -le 5 ]]; do
     curl -fsSL "${API}/releases?per_page=100&page=${page}" -o "$TMP/page.json"
-    python3 - "$TMP/page.json" "$TMP/releases.jsonl" <<'PY'
+    count="$(python3 - "$TMP/page.json" "$TMP/releases.jsonl" <<'PY'
 import json,sys
 page=json.load(open(sys.argv[1]))
 if not page:
     open(sys.argv[2]+".done","w").write("1")
+    print(0)
     raise SystemExit(0)
 with open(sys.argv[2],"a") as out:
     for r in page:
         out.write(json.dumps(r)+"\n")
 print(len(page))
 PY
-    [[ -f "$TMP/releases.jsonl.done" ]] && break
+)"
+    [[ -f "$TMP/releases.jsonl.done" || "$count" -lt 100 ]] && break
     page=$((page + 1))
   done
 }
