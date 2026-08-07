@@ -30,12 +30,34 @@ need python3
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-list_tags() {
-  curl -fsSL "${API}/releases?per_page=40" -o "$TMP/releases.json"
-  python3 - "$TMP/releases.json" <<'PY'
+fetch_release_index() {
+  # RuView publishes many non-ESP32 tags; page until we have esp32 hits or cap out.
+  : >"$TMP/releases.jsonl"
+  local page=1
+  while [[ "$page" -le 5 ]]; do
+    curl -fsSL "${API}/releases?per_page=100&page=${page}" -o "$TMP/page.json"
+    python3 - "$TMP/page.json" "$TMP/releases.jsonl" <<'PY'
 import json,sys
-rels=json.load(open(sys.argv[1]))
-for r in rels:
+page=json.load(open(sys.argv[1]))
+if not page:
+    open(sys.argv[2]+".done","w").write("1")
+    raise SystemExit(0)
+with open(sys.argv[2],"a") as out:
+    for r in page:
+        out.write(json.dumps(r)+"\n")
+print(len(page))
+PY
+    [[ -f "$TMP/releases.jsonl.done" ]] && break
+    page=$((page + 1))
+  done
+}
+
+list_tags() {
+  fetch_release_index
+  python3 - "$TMP/releases.jsonl" <<'PY'
+import json,sys
+for line in open(sys.argv[1]):
+    r=json.loads(line)
     tag=r.get("tag_name") or ""
     if "esp32" in tag.lower():
         print(f"{tag}\t{r.get('published_at','')}\t{r.get('name','')}")
@@ -43,16 +65,16 @@ PY
 }
 
 latest_esp32_tag() {
-  curl -fsSL "${API}/releases?per_page=60" -o "$TMP/releases.json"
-  python3 - "$TMP/releases.json" <<'PY'
+  fetch_release_index
+  python3 - "$TMP/releases.jsonl" <<'PY'
 import json,sys
-rels=json.load(open(sys.argv[1]))
-for r in rels:
+rows=[json.loads(l) for l in open(sys.argv[1])]
+for r in rows:
     tag=r.get("tag_name") or ""
     if "esp32" in tag.lower() and not r.get("draft") and not r.get("prerelease"):
         print(tag)
         raise SystemExit(0)
-for r in rels:
+for r in rows:
     tag=r.get("tag_name") or ""
     if "esp32" in tag.lower():
         print(tag)
